@@ -1,50 +1,8 @@
+import { AppError, SucessRequest } from '../helpers/classResponse'
 import validEmail from '../utils/validEmail'
 import validPassword from '../utils/validPassword'
+import { LoginRouter } from './login.routes'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-class LoginRouter {
-  route (httpRequest: any) {
-    if (!httpRequest || !httpRequest.body) {
-      return {
-        statusCode: 500,
-        message: ' httpRequest no have body '
-      }
-    }
-    const { email, password } = httpRequest.body
-    if (!email) {
-      return {
-        statusCode: 400,
-        message: 'Please enter a email'
-      }
-    } else if (!password) {
-      return {
-        statusCode: 400,
-        message: 'Please enter a password'
-      }
-    } else if (password.length <= 10) {
-      return {
-        statusCode: 400,
-        message: 'Please enter a 10 character password'
-
-      }
-    } else if (!validPassword(password)) {
-      return {
-        statusCode: 400,
-        message: 'Password must have uppercase and lowercase letter, number and special character'
-      }
-    } else if (!validEmail(email)) {
-      return {
-        statusCode: 400,
-        message: 'Please enter a valid email'
-
-      }
-    }
-    return {
-      statusCode: 200,
-      message: 'Logged'
-    }
-  }
-}
 describe('Login router', () => {
   test('Shold return 400 if no email is provided', () => {
     const sut = new LoginRouter()
@@ -56,7 +14,7 @@ describe('Login router', () => {
     const httpResponse = sut.route(httpRequest)
     if (httpResponse) {
       expect(httpResponse.statusCode).toBe(400)
-      expect(httpResponse.message).toBe('Please enter a email')
+      expect(httpResponse.body).toEqual(new AppError('Missing email'))
     }
   })
   test('Shold return 400 if no password is provided', () => {
@@ -69,33 +27,22 @@ describe('Login router', () => {
     const httpResponse = sut.route(httpRequest)
     if (httpResponse) {
       expect(httpResponse.statusCode).toBe(400)
-      expect(httpResponse.message).toBe('Please enter a password')
+      expect(httpResponse.body).toEqual(new AppError('Missing password'))
     }
   })
-  test('Shold return 400 if password length lower 10 is provided', () => {
-    const sut = new LoginRouter()
-    const httpRequest: any = {
-      body: {
-        email: 'any_email',
-        password: '123'
-      }
-    }
-    const httpResponse = sut.route(httpRequest)
-    if (httpResponse) {
-      expect(httpResponse.statusCode).toBe(400)
-    }
-  })
+
   test('Shold return 400 if password this is weak or medium is provided', () => {
     const sut = new LoginRouter()
     const httpRequest: any = {
       body: {
-        email: 'any_email',
+        email: 'any_email@gmail.com',
         password: '12345678901'
       }
     }
     const httpResponse = sut.route(httpRequest)
     if (httpResponse) {
       expect(httpResponse.statusCode).toBe(400)
+      expect(httpResponse.body).toEqual(new AppError('Password should be strong'))
     }
   })
   test('Shold return 400 if email is not validator', () => {
@@ -109,6 +56,7 @@ describe('Login router', () => {
     const httpResponse = sut.route(httpRequest)
     if (httpResponse) {
       expect(httpResponse.statusCode).toBe(400)
+      expect(httpResponse.body).toEqual(new AppError('Email should be valid'))
     }
   })
   test('Shold return 200 if email is valid and password is valid', () => {
@@ -122,7 +70,7 @@ describe('Login router', () => {
     const httpResponse = sut.route(httpRequest)
     if (httpResponse) {
       expect(httpResponse.statusCode).toBe(200)
-      expect(httpResponse.message).toBe('Logged')
+      expect(httpResponse.body).toEqual(new SucessRequest('Sucess'))
     }
   })
   test('Shold return 500 if no have body', () => {
