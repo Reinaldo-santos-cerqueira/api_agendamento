@@ -1,3 +1,3 @@
 function teste(){
-    return 1;
+    return '1ss';
 };
