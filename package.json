@@ -1,0 +1,22 @@
+{
+  "name": "api_agendamento",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Reinaldo-santos-cerqueira <kingnaldoreinaldo@gmail.com>",
+  "license": "MIT",
+  "lint-staged": {
+    "*.js": [
+      "standard"
+    ]
+  },
+  "huskt":{
+    "hooks": {
+      "pre-commit":"lint-staged"
+    }
+  },
+  "devDependencies": {
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
+    "standard": "^17.0.0"
+  }
+}
