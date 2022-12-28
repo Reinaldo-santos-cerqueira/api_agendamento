@@ -1,3 +1,3 @@
 function teste(){
-    return {a:112325346};
+    return 1;
 };
