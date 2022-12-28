@@ -9,7 +9,7 @@
       "standard"
     ]
   },
-  "huskt":{
+  "husky":{
     "hooks": {
       "pre-commit":"lint-staged"
     }
