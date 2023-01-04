@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+
+}
+
+model Company {
+  id Int @id @default(autoincrement())
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  name       String       @db.VarChar(255)
+  password   String       @db.VarChar(500)
+  email      String       @db.VarChar(255)
+  specialty  String       @db.VarChar(255)
+  phone      String       @db.VarChar(20)
+  adress     Adress       @relation(fields: [adressId], references: [id])
+  adressId   Int
+  Service    Service[]
+  Scheduling Scheduling[]
+}
+
+model Adress {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  street      String   @db.VarChar(255)
+  publicPlace String   @db.VarChar(500)
+  number      String   @db.VarChar(255)
+  city        String   @db.VarChar(255)
+  uf          String   @db.Char(2)
+  cep         String   @db.VarChar(8)
+
+  Company Company[]
+  Person  Person[]
+}
+
+model Person {
+  id Int @id @default(autoincrement())
+
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  name                     String                     @db.VarChar(255)
+  cpf                      String                     @db.Char(11)
+  profession               String                     @db.VarChar(255)
+  password                 String                     @db.VarChar(500)
+  email                    String                     @db.VarChar(255)
+  phone                    String                     @db.VarChar(20)
+  type                     TypePerson                 @default(Client)
+  adress                   Adress                     @relation(fields: [adressId], references: [id])
+  adressId                 Int
+  RefClient                Scheduling[]               @relation("RefClient")
+  RefCollaborator          Scheduling[]               @relation("RefCollaborator")
+  Rel_service_Collaborator Rel_service_Collaborator[]
+}
+
+model Service {
+  id                       String                     @id @default(uuid())
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  name                     String                     @db.VarChar(255)
+  description              String                     @db.VarChar(500)
+  duration                 String                     @db.VarChar(10)
+  value                    Float                      @db.Float()
+  company                  Company                    @relation(fields: [companyId], references: [id])
+  companyId                Int
+  Scheduling               Scheduling[]
+  Rel_service_Collaborator Rel_service_Collaborator[]
+}
+
+model Schedule {
+  id Int @id @default(autoincrement())
+
+  endTime    String       @db.VarChar(10)
+  earlyTime  String       @db.VarChar(10)
+  date       DateTime     @db.DateTime()
+  Scheduling Scheduling[]
+}
+
+model Scheduling {
+  id Int @id @default(autoincrement())
+
+  company        Company  @relation(fields: [companyId], references: [id])
+  companyId      Int
+  client         Person   @relation(fields: [clientId], references: [id], name: "RefClient")
+  clientId       Int
+  collaborator   Person   @relation(fields: [collaboratorId], references: [id], name: "RefCollaborator")
+  collaboratorId Int
+  schedule       Schedule @relation(fields: [ScheduleId], references: [id])
+  ScheduleId     Int
+  service        Service  @relation(fields: [serviceID], references: [id])
+  serviceID      String
+}
+
+model Rel_service_Collaborator {
+  id Int @id @default(autoincrement())
+
+  collaborator   Person  @relation(fields: [collaboratorId], references: [id])
+  collaboratorId Int
+  service        Service @relation(fields: [serviceID], references: [id])
+  serviceID      String
+}
+
+enum TypePerson {
+  Client
+  Collaborator
+}

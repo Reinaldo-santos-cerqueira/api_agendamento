@@ -1,7 +1,0 @@
-{
-    "*.js": [
-        "standard --fix",
-        "test:staged",
-        "git-add"
-    ]
-}
