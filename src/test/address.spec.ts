@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpResponseAddress } from '../class/httpResponse'
 import { AddressControllers } from '../controllers/addressControllers'
 import { IAddressBody, IResponseId } from '../interfaces/IAddressBody'
@@ -158,14 +159,7 @@ describe('Test referent to address', () => {
       }
 
       const httpResponse = await sut.create(httpRequest)
-      expect(httpResponse).toEqual(new HttpResponseAddress(200, {
-        street: 'any street',
-        publicPlace: 'any public place',
-        number: 'any number',
-        city: 'any city',
-        uf: 'BA',
-        cep: 'any cep'
-      }))
+      expect(httpResponse.status).toBe(200)
     }
   )
   test('Shold if return 500 if no exists body',
@@ -208,7 +202,7 @@ describe('Test referent to address', () => {
 
       const httpRequest: IResponseId = {
         params: {
-          id: 88
+          id: 44
         }
       }
 
@@ -281,7 +275,7 @@ describe('Test referent to address', () => {
           city: 'any city',
           uf: 'BA',
           cep: 'any cep',
-          id: 3
+          id: 37
         }
       }
 

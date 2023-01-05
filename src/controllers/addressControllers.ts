@@ -1,12 +1,11 @@
-import { Address } from '../class/addressClass'
-import { AdressCreateService } from '../services/address/createService'
+import { AddressCreateService } from '../services/address/createAddressService'
 import { HttpResponseAddress } from '../class/httpResponse'
 import { validUf } from '../utils/validUf'
 import { IAddressBody, IResponseId } from '../interfaces/IAddressBody'
-import { AdressDeleteService } from '../services/address/deleteService'
-import { AdressListService } from '../services/address/listAllService'
-import { AdressListOneService } from '../services/address/listOneService'
-import { UpdateCreateService } from '../services/address/updateService'
+import { AddressDeleteService } from '../services/address/deleteAddressService'
+import { AddressListService } from '../services/address/listAllAddressService'
+import { AddressListOneService } from '../services/address/listOneAddressService'
+import { UpdateCreateService } from '../services/address/updateAddressService'
 
 export class AddressControllers {
   public async create (httpRequest: IAddressBody): Promise<HttpResponseAddress> {
@@ -37,8 +36,8 @@ export class AddressControllers {
     } else if (!validUf(uf + '')) {
       return new HttpResponseAddress(400, 'Please enter uf valid')
     }
-    const adressCreateService = new AdressCreateService()
-    const executeAdressCreateService = await adressCreateService.execute({
+    const addressCreateService = new AddressCreateService()
+    const executeAddressCreateService = await addressCreateService.execute({
       street: street.toString(),
       publicPlace: publicPlace.toString(),
       number: number.toString(),
@@ -47,14 +46,7 @@ export class AddressControllers {
       cep: cep.toString()
     })
 
-    return new HttpResponseAddress(200, {
-      street: executeAdressCreateService.street,
-      publicPlace: executeAdressCreateService.publicPlace,
-      number: executeAdressCreateService.number,
-      city: executeAdressCreateService.city,
-      uf: executeAdressCreateService.uf,
-      cep: executeAdressCreateService.cep
-    })
+    return new HttpResponseAddress(200, executeAddressCreateService.toString())
   }
 
   public async delete (httpRequest: IResponseId): Promise<HttpResponseAddress> {
@@ -68,30 +60,30 @@ export class AddressControllers {
       return new HttpResponseAddress(400, 'Please enter id')
     }
 
-    const adressDeleteService = new AdressDeleteService()
+    const addressDeleteService = new AddressDeleteService()
 
-    const adressDeleteServiceExecute = await adressDeleteService.execute(parseInt(id + ''))
+    const addressDeleteServiceExecute = await addressDeleteService.execute(parseInt(id + ''))
 
-    return new HttpResponseAddress(200, 'Delete with sucess id = ' + adressDeleteServiceExecute)
+    return new HttpResponseAddress(200, 'Delete with sucess id = ' + addressDeleteServiceExecute)
   }
 
   public async readAll () {
-    const adressListService = new AdressListService()
+    const addressListService = new AddressListService()
 
-    const executeAdressListService = await adressListService.execute()
+    const executeAddressListService = await addressListService.execute()
 
-    return new HttpResponseAddress(200, executeAdressListService)
+    return new HttpResponseAddress(200, executeAddressListService)
   }
 
   public async readOne (id:number | boolean) {
     if (!id) {
       return new HttpResponseAddress(400, 'Please enter id')
     }
-    const adressListOneService = new AdressListOneService()
+    const addressListOneService = new AddressListOneService()
 
-    const executeAdressListOneService = await adressListOneService.execute(parseInt(id + ''))
+    const executeAddressListOneService = await addressListOneService.execute(parseInt(id + ''))
 
-    return new HttpResponseAddress(200, executeAdressListOneService)
+    return new HttpResponseAddress(200, executeAddressListOneService)
   }
 
   public async update (httpRequest: IAddressBody): Promise<HttpResponseAddress> {

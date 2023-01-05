@@ -1,0 +1,8 @@
+  name,
+  cpf,
+  profession,
+  password,
+  email,
+  phone,
+  type,
+  adressId

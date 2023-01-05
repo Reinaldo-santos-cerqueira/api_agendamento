@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
-export class AdressDeleteService {
+export class AddressDeleteService {
   public async execute (id : number) {
-    await prisma.adress.delete({
+    await prisma.address.delete({
       where: {
         id
       }

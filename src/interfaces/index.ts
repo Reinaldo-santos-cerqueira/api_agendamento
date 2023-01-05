@@ -17,7 +17,7 @@ export interface IPerson {
         email: string;
         phone: string;
         type: 'Client' | 'Collaborator';
-        adressId: number;
+        addressId: number;
     };
 }
 
@@ -25,6 +25,19 @@ export interface IResponseBody{
     body: {
         message: string
         error: boolean
+    }
+}
+export interface IBodyTradePassword {
+    body: {
+        id: number | boolean
+        password: string | boolean
+    }
+}
+
+export interface IBodyLogin {
+    body: {
+        email: string | boolean
+        password: string | boolean
     }
 }
 
@@ -42,6 +55,14 @@ export interface IPersonBody {
         email: string | boolean;
         phone: string | boolean;
         type: 'Client' | 'Collaborator' | boolean;
-        adressId: number | boolean;
+        addressId: number | boolean;
+        id?: number
     };
+}
+
+export interface IloginBody{
+    body: {
+        email: string | boolean;
+        password: string | boolean;
+    }
 }

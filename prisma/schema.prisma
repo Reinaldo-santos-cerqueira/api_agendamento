@@ -6,9 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Company {
@@ -21,25 +20,25 @@ model Company {
   email      String       @db.VarChar(255)
   specialty  String       @db.VarChar(255)
   phone      String       @db.VarChar(20)
-  adress     Adress       @relation(fields: [adressId], references: [id])
-  adressId   Int
+  Address     Address       @relation(fields: [addressId], references: [id])
+  addressId   Int
   Service    Service[]
   Scheduling Scheduling[]
 }
 
-model Adress {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  street      String   @db.VarChar(255)
-  publicPlace String   @db.VarChar(500)
-  number      String   @db.VarChar(255)
-  city        String   @db.VarChar(255)
-  uf          String   @db.Char(2)
-  cep         String   @db.VarChar(8)
-
-  Company Company[]
-  Person  Person[]
+model Address {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  street      String    @db.VarChar(255)
+  publicPlace String    @db.VarChar(500)
+  number      String    @db.VarChar(255)
+  city        String    @db.VarChar(255)
+  uf          String    @db.Char(2)
+  cep         String    @db.VarChar(8)
+  status      String    @default("A") @db.Char(1)
+  Company     Company[]
+  Person      Person[]
 }
 
 model Person {
@@ -54,8 +53,8 @@ model Person {
   email                    String                     @db.VarChar(255)
   phone                    String                     @db.VarChar(20)
   type                     TypePerson                 @default(Client)
-  adress                   Adress                     @relation(fields: [adressId], references: [id])
-  adressId                 Int
+  Address                   Address                     @relation(fields: [addressId], references: [id])
+  addressId                 Int
   RefClient                Scheduling[]               @relation("RefClient")
   RefCollaborator          Scheduling[]               @relation("RefCollaborator")
   Rel_service_Collaborator Rel_service_Collaborator[]

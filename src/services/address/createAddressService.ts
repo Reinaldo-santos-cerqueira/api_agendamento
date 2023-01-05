@@ -3,7 +3,7 @@ import { IAddress } from '../../interfaces'
 import { Address } from '../../class/addressClass'
 const prisma = new PrismaClient()
 
-export class UpdateCreateService {
+export class AddressCreateService {
   public async execute (
     {
       street,
@@ -11,32 +11,19 @@ export class UpdateCreateService {
       number,
       city,
       uf,
-      cep,
-      id
+      cep
     }: IAddress
-  ): Promise<Address> {
-    const address = await prisma.adress.update({
-      where: {
-        id
-      },
+  ) {
+    const address = await prisma.address.create({
       data: {
         street,
         publicPlace,
         number,
         city,
         uf,
-        cep,
-        id
-      },
-      select: {
-        street: true,
-        publicPlace: true,
-        number: true,
-        city: true,
-        uf: true,
-        cep: true
+        cep
       }
     })
-    return address
+    return address.id
   }
 }

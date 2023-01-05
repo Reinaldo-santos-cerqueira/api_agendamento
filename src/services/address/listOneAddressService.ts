@@ -2,9 +2,9 @@ import { PrismaClient } from '@prisma/client'
 import { Address } from '../../class/addressClass'
 const prisma = new PrismaClient()
 
-export class AdressListOneService {
+export class AddressListOneService {
   public async execute (id:number): Promise<Address|string> {
-    const address = await prisma.adress.findFirst({
+    const address = await prisma.address.findFirst({
       where: {
         id
       },

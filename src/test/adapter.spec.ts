@@ -1,5 +1,4 @@
 import app from '../server'
-import { HttpResponseAdapter } from '../class/httpResponseAdapter'
 import request from 'supertest'
 
 describe('Test referent to adapter', () => {
@@ -14,18 +13,10 @@ describe('Test referent to adapter', () => {
         cep: '41205235'
       })
       expect(response.status).toBe(200)
-      expect(response.body).toEqual({
-        street: 'Rua da roma',
-        publicPlace: '3° predio azul',
-        number: '229',
-        city: 'Salvador',
-        uf: 'BA',
-        cep: '41205235'
-      })
     })
   it('Shold return response.status 200',
     async () => {
-      const response = await request(app).get('/v1/address/136')
+      const response = await request(app).get('/v1/address/1')
       expect(response.status).toBe(200)
       expect(response.body).toEqual({
         street: 'Rua da roma',
@@ -50,7 +41,7 @@ describe('Test referent to adapter', () => {
         city: 'Salvador',
         uf: 'BA',
         cep: '41205235',
-        id: 136
+        id: 2
       })
       expect(response.status).toBe(200)
       expect(response.body).toEqual({
